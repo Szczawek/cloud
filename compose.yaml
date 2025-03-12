@@ -1,0 +1,43 @@
+name: stars-and-clounds
+
+services: 
+  client: 
+    build: client
+    ports: 
+      - 8443:8443
+      - 8080:8080 
+    networks:
+      - frontend
+
+  proxy:
+    build: proxy
+    ports:
+      - 443:443
+      - 80:80
+    networks:
+      - backend
+      - frontend
+
+  apiv1:
+    build: api
+    ports: 
+      - 4000:4000
+  
+    networks:
+      - backend
+      - deepback
+
+  mysqldb: 
+    build: mysql_db
+    ports:
+        - 3307:3306
+    networks:
+      - deepback
+
+networks:
+    frontend:
+      driver: bridge
+    backend:  
+      driver: bridge
+    deepback:
+      driver: bridge

@@ -1,0 +1,68 @@
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Node.js
+**/node_modules/
+npm-debug.log
+yarn-debug.log
+yarn-error.log
+package-lock.json
+
+# Vite
+**/dist/
+**/.vite/
+**/*.vite/
+
+# React / Frontend
+**/build/
+**/public/build/
+**/*.env.local
+**/*.env.*.local
+**/*.env
+
+# Express (if used in the backend)
+**/node_modules/
+npm-debug.log
+yarn-debug.log
+yarn-error.log
+
+# MySQL / Database
+**/*.sql
+**/*.sqlite
+**/*.db
+**/*.db-journal
+**/*.log
+
+# Logs and temporary files
+**/*.log
+logs/
+pids/
+**/*.pid
+**/*.seed
+**/ssl
+**/videos
+**/images
+nginx
+# Coverage reports
+coverage/
+**/*.lcov-report/
+
+# IDEs and editors
+**/.idea/
+**/.vscode/
+**/*.sublime-workspace
+**/*.sublime-project
+**/*.swp
+
+# Optional: MacOS-specific
+**/*~
+**/.DS_Store
+
+# NPM / Yarn
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+yarn.lock
+

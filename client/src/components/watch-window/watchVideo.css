@@ -1,0 +1,9 @@
+.video-box {
+    padding-top:1rem;
+    display:grid;
+    place-content:center;
+}
+
+.video-frame {
+    max-width:600px;
+}
