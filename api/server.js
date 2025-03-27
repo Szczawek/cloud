@@ -58,9 +58,23 @@ async function storageImg(req,res) {
     res.status(500).json({ error: "Image processing failed" });
   }
 }
+
+async function convertToBlob(req,res) {
+try {
+    const video = fs.createReadStream("./videos/testTwo.mp4",{start:0,end:10000})
+    video.on("data",(data)=> {
+        console.log(data);
+    })
+    res.json("oK")
+} catch(err) {
+    console.log(err)
+    res.json("Error")
+}
+}
+
 app.post("/upload-images",uploads.single("img"), storageImg);
 app.get("/load-video",loadVideo);
-
+app.get("/test", convertToBlob);
 server.listen(PORT,()=>{
 	console.log(`https://127.0.0.1:${PORT}`)
 })

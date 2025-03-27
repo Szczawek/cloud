@@ -9,28 +9,33 @@ services:
     networks:
       - frontend
 
-  proxy:
-    build: proxy
-    ports:
-      - 443:443
-      - 80:80
-    networks:
-      - backend
-      - frontend
-
   apiv1:
     build: api
-    ports: 
-      - 4000:4000
-  
+    expose: 
+    -  4000
+    deploy:
+      replicas: 3
     networks:
       - backend
       - deepback
+    depends_on:
+      - mysqldb
+  
+  proxy:
+    build: proxy
+    ports:
+     - 443:443
+     - 80:80
+    networks:
+      - backend
+      - frontend
+    depends_on:
+      - apiv1
 
   mysqldb: 
     build: mysql_db
     ports:
-        - 3307:3306
+      - 3307:3306
     networks:
       - deepback
 

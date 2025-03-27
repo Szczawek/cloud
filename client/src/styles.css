@@ -1,0 +1,10 @@
+*, :before,:after {
+padding:none;
+margin:none;
+outline:none;
+}
+
+a {
+color:inherit;
+text-decoration:none;
+}

@@ -1,5 +1,4 @@
-module example.com
-
+module apiv2
 go 1.23.0
 
 require (
