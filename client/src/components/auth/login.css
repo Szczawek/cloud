@@ -1,0 +1,12 @@
+.login-box {
+    display:grid;
+    justify-content:center;
+    row-gap:1rem;
+}
+.login-box .title-box {
+    text-align:center;
+}
+
+.login-box input {
+    padding: .2rem .4rem;
+}

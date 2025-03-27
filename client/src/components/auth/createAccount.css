@@ -1,0 +1,12 @@
+.form-box {
+    display:grid;
+    row-gap:1rem;
+}
+
+.title-box {
+    text-align:center;
+}
+
+.form-box input {
+    padding: .2rem .4rem;
+}

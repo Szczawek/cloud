@@ -1,11 +1,13 @@
 import {useState, useRef} from "react";
+import {Link} from "react-router";
+import "./createAccount.css";
 
 const defData = {
-        nick:"",
-        tag:"",
-        login:"",
-        password:"",
-        confirm:"", 
+    nick:"",
+    tag:"",
+    login:"",
+    password:"",
+    confirm:"", 
 }
 
 const defLogs = {
@@ -49,7 +51,6 @@ export default function CreateAccount() {
             if(logs.password) rewriteLogs("password", false);
             return; 
         };
-        console.log(2);
         if(password == confirm && logs.password) return rewriteLogs("password", false);
         if(!logs.password) rewriteLogs("password", true);
     }
@@ -59,8 +60,10 @@ export default function CreateAccount() {
             e.preventDefault();
             if(logs.password) return;
             rewriteLogs("loading",true);
+        
             const copy = {...data};
             delete copy.confirm;
+        
             const options = {
                 method:"POST",
                 headers: {
@@ -81,20 +84,22 @@ export default function CreateAccount() {
 
     return <div className="create-acc-box">
             <form className="form-box" onSubmit={submit}>
-                <header className="title-box"><h2>Create Account</h2></header>
+                <header className="title-box">
+            <h2>Create Account</h2></header>
                 <label htmlFor="nick">Nick</label>
-                <input value={data.nick} onChange={rewriteData} placeholder="Nick" required id="nick" name="nick"/>
+                <input maxLength="32" minLength="2" value={data.nick} onChange={rewriteData} placeholder="Nick" required id="nick" name="nick"/>
                 <label htmlFor="unique">Tag Name</label>
-                <input value={data.tag} onChange={rewriteData} placeholder="Unique Name" required id="unique" name="tag"/>
+                <input minLength="3" maxLength="40" value={data.tag} onChange={rewriteData} placeholder="Unique Name" required id="unique" name="tag"/>
                 <label htmlFor="login">Email</label>
-                <input value={data.email} onChange={rewriteData} placeholder="Email" required id="login" type="email" name="login" />
+                <input minLength="5" maxLength="50" value={data.email} onChange={rewriteData} placeholder="Email" required id="login" type="email" name="login" />
                 {logs.password && <p>Password are not the same</p>}
                 <label htmlFor="password">Password</label>
                 <input ref={password} minLength="8" maxLength="32" value={data.password} onChange={rewriteData} placeholder="Password" required id="password" type="password" name="password" />
-                <button onClick={showPassword} type="button">Show</button>
+                <button onClick={showPassword} type="button">Show Password</button>
                 <label htmlFor="confirm">Confirm Password</label>
                 <input ref={confirm} minLength="8" maxLength="32" value={data.confirm} onChange={rewriteData} placeholder="Confirm Password" required id="confirm" type="password" name="confirm" />
                 <button className="sb-btn" disabled={data.loading} type="submit">{data.loading? "Loading": "Submit"}</button>
             </form>
+            <Link to="/login">Login</Link>
         </div>
 }
