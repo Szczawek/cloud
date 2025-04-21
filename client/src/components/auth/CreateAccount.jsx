@@ -1,4 +1,4 @@
-import {useState, useRef} from "react";
+import {useEffect, useState, useRef} from "react";
 import {Link} from "react-router";
 import "./createAccount.css";
 
@@ -22,8 +22,14 @@ export default function CreateAccount() {
     const [logs,setLogs] = useState(defLogs);
     const password = useRef(null);
     const confirm = useRef(null);
+    const firstElement = useRef(null);
 
-    function rewriteData(e) {
+    useEffect(()=> {
+        if(!firstElement.current) return;
+        firstElement.current.focus();
+    },[])
+
+   function rewriteData(e) {
         const {name,value} = e.target;
         if(name == "password" || name == "confirm") comparePass();
         setData(prev =>({...prev,[name]:value}));
@@ -42,7 +48,7 @@ export default function CreateAccount() {
 
         if(type === "text") return swap("password");
         swap("text");
-        
+    
     }
 
     function comparePass() {
@@ -86,7 +92,7 @@ export default function CreateAccount() {
             <form className="form-box" onSubmit={submit}>
                 <header className="title-box">
             <h2>Create Account</h2></header>
-                <label htmlFor="nick">Nick</label>
+                <label ref={firstElement} htmlFor="nick">Nick</label>
                 <input maxLength="32" minLength="2" value={data.nick} onChange={rewriteData} placeholder="Nick" required id="nick" name="nick"/>
                 <label htmlFor="unique">Tag Name</label>
                 <input minLength="3" maxLength="40" value={data.tag} onChange={rewriteData} placeholder="Unique Name" required id="unique" name="tag"/>

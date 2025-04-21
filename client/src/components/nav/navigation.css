@@ -1,0 +1,18 @@
+.tab-list {
+    display:grid;
+    justify-content:center;
+    align-items:center;
+    grid-auto-columns: minmax(3rem,8rem);
+    grid-auto-flow:column;
+}
+
+.tab-item {
+    text-align:center;
+}
+
+@media (width < 650px) {
+
+    .tab-list {
+        grid-auto-flow:row;
+    }
+}

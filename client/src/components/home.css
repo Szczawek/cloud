@@ -1,0 +1,9 @@
+.welcome-box {
+    display:grid;
+    justify-content:center;
+    align-items: center;
+}
+
+.sub-title {
+    text-align:right;
+}

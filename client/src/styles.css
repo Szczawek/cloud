@@ -1,10 +1,14 @@
 *, :before,:after {
-padding:none;
-margin:none;
-outline:none;
+    padding:none;
+    margin:none;
+    outline:none;
 }
 
 a {
-color:inherit;
-text-decoration:none;
+    color:inherit;
+    text-decoration:none;
+}
+
+li {
+    list-style:none;
 }
