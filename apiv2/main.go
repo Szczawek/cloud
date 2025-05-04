@@ -5,15 +5,15 @@ import (
 	"net/http"
 	"log"
 	"time"
-    "apiv2/content/components/account"
-    "apiv2/content/components/access"
-    "apiv2/content/config"
+    "apiv2/roots/components/account"
+    "apiv2/roots/components/access"
+    "apiv2/roots/components/session"
+    "apiv2/roots/config"
     "github.com/lpernett/godotenv"    
 	"github.com/rs/cors"
+    "os"
 	"github.com/go-chi/chi/v5"
 )
-
-var port string = "8443";
 
 func helmet(next http.Handler) http.Handler{
     return http.HandlerFunc(func(res http.ResponseWriter, req *http.Request) {
@@ -33,30 +33,17 @@ func helmet(next http.Handler) http.Handler{
     })  
 }
 
-func showUsers() {
-    cmd := "SELECT nick FROM users";
-    rows, err := database.DB.Query(cmd);
-    if err != nil {
-        log.Fatal(err);
-    }
-    var usersName []string;
-    for rows.Next() {
-        var nick string;
-
-        if err := rows.Scan(&nick); err != nil {
-            log.Fatal(err);
-        }
-        usersName = append(usersName,nick);
-    }
-    rows.Close();
-    fmt.Println(usersName);
-}
-
 //There should be defer db.Close();
 //"grace-full" shutdown;
 
 func main() {
+    err := godotenv.Load(".env");
+    if err != nil {
+        log.Fatal(err);
+    };
+
 	r := chi.NewRouter()
+    port := os.Getenv("PORT");
     host := "0.0.0.0:" + port;;
     
     server := &http.Server{
@@ -69,27 +56,21 @@ func main() {
 	corsHandler := cors.New(cors.Options{
         AllowedOrigins: []string{"https://127.0.0.1:5173"}, 
 		AllowedMethods: []string{"GET","POST"},
-        AllowedHeaders: []string{"Content-Type", "Authorization"},
+        AllowedHeaders: []string{"Content-Type", "Authorization",},
 		ExposedHeaders: []string{"Content-Length", "X-Requested-With"},
 	    AllowCredentials: true,
         MaxAge: 300,
         Debug: true,
     });
     
-    err := godotenv.Load(".env");
-    if err != nil {
-        log.Fatal(err);
-    };
-
     r.Use(corsHandler.Handler);
     r.Use(helmet);
-    r.Use(access.AccessPoint); 
-    r.Get("/session",access.Session);
+    r.Use(access.AccessPoint); ;
     r.Post("/create-account",account.CreateAccount)
     r.Post("/login",account.Login);
+    r.Get("/auto-login",session.AutoLogin);
 
-    database.Init();
-    showUsers();
+    database.Init(); 
 	fmt.Sprintf("Server is starting on https://127.0.0.1:%s", port);
 	log.Fatal(server.ListenAndServeTLS("ssl/server.cert", "ssl/server.key"));
 };

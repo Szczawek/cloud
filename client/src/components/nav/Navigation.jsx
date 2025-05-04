@@ -7,8 +7,8 @@ export default function Navigation() {
                 <nav className="navigation">
                     <ul className="tab-list">
                         <li className="tab-item">
-                            <NavLink className="link" to="/">Wall</NavLink>
-                        </li>
+                            <NavLink className="link" to="/"><img src="/public/images/logo.png" width="64" height="64" alt="logo" /></NavLink>
+                        </li> 
                         <li className="tab-item">
                             <NavLink className="link" to="/info">info</NavLink>
                             </li>                        

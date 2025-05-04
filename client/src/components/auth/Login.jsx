@@ -1,6 +1,7 @@
-import {useState, useRef} from "react";
+import {useContext, useState, useRef} from "react";
 import {Navigate,Link} from "react-router";
 import "./login.css";
+import Inherit from "../../App.jsx"
 
 const defaultData = {
     login:"",
@@ -16,6 +17,7 @@ export default function Login() {
     const [data, setData] = useState(defaultData);
     const [logs, setLogs] = useState(defaultLogs);
     const password = useRef(null);
+    const parentContext = useContext(Inherit);
 
     function updateLogs(status,value) {
         setLogs(prev => ({...prev,[status]:value}));
@@ -48,10 +50,10 @@ export default function Login() {
                 body:JSON.stringify(data),
             }
             
-            const res = await fetch(`{process.env.VITE_API_URL}/login`,options);
+            const res = await fetch(`${process.env.VITE_API_URL}/login`,options);
             if(!res.ok) throw res.status;
-
-            console.log("Seneded!");
+            parentContext.refreshUser();
+            updateLogs("logged", true);
         } catch(err) {
             console.log(err);
          } finally {
@@ -67,7 +69,7 @@ export default function Login() {
                     <h2 className="title">Login</h2>
                 </header>
                 <label htmlFor="login-inp">Login</label>
-                <input placeholder="Login" value={data.login} onChange={updateData} minLength="3" maxLength="60" name="login" type="email" required/>
+                <input id="login-inp" placeholder="Login" value={data.login} onChange={updateData} minLength="3" maxLength="60" name="login" type="email" required/>
                 <label htmlFor="pass-inp">Password</label>
                 <input ref={password} placeholder="Password" value={data.password} onChange={updateData} type="password" minLength="8" maxLength="32" name="password" id="pass-inp" required/>
         

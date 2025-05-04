@@ -1,7 +1,7 @@
-import {useEffect, useState, useRef} from "react";
-import {Link} from "react-router";
+import {useContext, useEffect, useState, useRef} from "react";
+import {Link,Navigate} from "react-router";
 import "./createAccount.css";
-
+import {Inherit} from "../../App.jsx";
 const defData = {
     nick:"",
     tag:"",
@@ -15,6 +15,7 @@ const defLogs = {
     email:false,
     password:false,
     loading:false,
+    created:false,
 }
 
 export default function CreateAccount() {
@@ -23,11 +24,14 @@ export default function CreateAccount() {
     const password = useRef(null);
     const confirm = useRef(null);
     const firstElement = useRef(null);
+    const parentContext = useContext(Inherit);
 
     useEffect(()=> {
         if(!firstElement.current) return;
         firstElement.current.focus();
     },[])
+
+    console.log(parentContext)
 
    function rewriteData(e) {
         const {name,value} = e.target;
@@ -75,18 +79,27 @@ export default function CreateAccount() {
                 headers: {
                     "Content-Type":"application/json",
                 },
-                credentails:"include",
+                credentials:"include",
                 body:JSON.stringify(copy),
             }
             const res = await fetch(`${process.env.VITE_API_URL}/create-account`,options);
-            if(!res.ok) throw res.status;
-            console.log("ok");
+            if(!res.ok) {
+                if (res.status == 401) {
+                    rewriteLogs("email", true);
+                    return;
+                }
+                throw res.status;
+            }
+            parentContext.refreshUser();
+            rewriteLogs("created",true);
         } catch(err) {
-            console.log(err);
+            rewriteLogs("error",true);
         } finally {
             rewriteLogs("loading",false);
         }
     }
+
+    if(logs.created) return <Navigate to="/"/>
 
     return <div className="create-acc-box">
             <form className="form-box" onSubmit={submit}>
