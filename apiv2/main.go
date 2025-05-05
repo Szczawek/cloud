@@ -12,11 +12,19 @@ import (
     "github.com/lpernett/godotenv"    
 	"github.com/rs/cors"
     "os"
+    "apiv2/roots/components/upload"
 	"github.com/go-chi/chi/v5"
 )
 
 func helmet(next http.Handler) http.Handler{
     return http.HandlerFunc(func(res http.ResponseWriter, req *http.Request) {
+        path := req.URL.Path
+        defer req.Body.Close();
+        if path != "/upload-video" {
+            res.Header().Set("Cross-Origin-Opener-Policy", "same-origin")
+            res.Header().Set("Cross-Origin-Resource-Policy", "same-origin")
+            res.Header().Set("Cross-Origin-Embedder-Policy", "require-corp")
+        }
         res.Header().Set("X-Frame-Options", "DENY")
         res.Header().Set("X-Content-Type-Options", "nosniff")
         res.Header().Set("X-XSS-Protection", "1; mode=block")
@@ -25,10 +33,8 @@ func helmet(next http.Handler) http.Handler{
         res.Header().Set("Strict-Transport-Security", "max-age=31536000; includeSubDomains")
         res.Header().Set("Permissions-Policy", "geolocation=(self), camera=(), microphone=()")
         res.Header().Set("Cache-Control", "no-store, no-cache, must-revalidate")
-        res.Header().Set("Pragma", "no-cache") 
-        res.Header().Set("Cross-Origin-Opener-Policy", "same-origin")
-        res.Header().Set("Cross-Origin-Resource-Policy", "same-origin")
-        res.Header().Set("Cross-Origin-Embedder-Policy", "require-corp")
+        res.Header().Set("Pragma", "no-cache")
+
         next.ServeHTTP(res,req);
     })  
 }
@@ -49,8 +55,8 @@ func main() {
     server := &http.Server{
         Addr: host,
         Handler: r,
-        ReadTimeout:    10 * time.Second,
-        WriteTimeout:   10 * time.Second,
+        ReadTimeout:    60 * time.Second,
+        WriteTimeout:   60 * time.Second,
         MaxHeaderBytes: 1 << 20,
     }
 	corsHandler := cors.New(cors.Options{
@@ -69,7 +75,7 @@ func main() {
     r.Post("/create-account",account.CreateAccount)
     r.Post("/login",account.Login);
     r.Get("/auto-login",session.AutoLogin);
-
+    r.Post("/upload-video", videoUp.UploadVideo);
     database.Init(); 
 	fmt.Sprintf("Server is starting on https://127.0.0.1:%s", port);
 	log.Fatal(server.ListenAndServeTLS("ssl/server.cert", "ssl/server.key"));

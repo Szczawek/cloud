@@ -1,7 +1,8 @@
 *, :before,:after {
-    padding:none;
-    margin:none;
-    outline:none;
+    padding:0;
+    margin:0;
+    outline:0;
+    box-sizing:border-box;
 }
 
 a {
@@ -11,4 +12,10 @@ a {
 
 li {
     list-style:none;
+}
+
+.app {
+    display:grid;
+    grid-template-rows: 100px 1fr;
+    min-height:100vh;
 }

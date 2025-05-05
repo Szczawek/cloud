@@ -1,0 +1,37 @@
+.wall {
+    padding: 1rem 2rem;
+    display:flex;
+    flex-wrap:wrap;
+    align-content:start;
+    justify-content:center;
+    gap:2rem;
+}
+
+.video-prev {
+    min-width:350px;
+    height: 200px;
+}
+
+.empty-fields {
+    height:100%;
+    display:grid;
+    row-gap:.4rem;
+    justify-items:center;
+    place-content:center;
+    text-align:center;
+}
+
+.link-field {
+    padding:.2rem .4rem;
+    background-color:purple;
+    width:max-content;
+    font-size:1.4rem;
+    font-weight:600;
+    border-radius: .2rem;
+}
+
+@media (width < 500px) {
+    .wall {
+        padding-inline: 1rem;
+    }
+}

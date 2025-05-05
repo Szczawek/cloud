@@ -1,4 +1,10 @@
+.navigation {
+    display: grid;
+    align-items:center;
+    grid-template-columns: repeat(3, 1fr);
+}
 .tab-list {
+    text-align:center;
     display:grid;
     justify-content:center;
     align-items:center;
@@ -6,12 +12,10 @@
     grid-auto-flow:column;
 }
 
-.tab-item {
-    text-align:center;
+.mobile-menu {
+    display:none;
 }
-
 @media (width < 650px) {
-
     .tab-list {
         grid-auto-flow:row;
     }

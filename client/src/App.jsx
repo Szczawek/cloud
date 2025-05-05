@@ -5,12 +5,12 @@ import  "./styles.css"
 import Navigation from "./components/nav/Navigation.jsx"
 import LoadingScreen from "./components/LoadingScreen.jsx";
 const Home = lazy(()=>import("./components/Home.jsx"));
-const Wall = lazy(()=>import("./components/Wall.jsx"));
+const Wall = lazy(()=>import("./components/main/Wall.jsx"));
 const Login = lazy(()=>import("./components/auth/Login.jsx"));
 const AuthTwo = lazy(()=>import("./components/auth/AuthTwo.jsx"));
 const CreateAccount = lazy(()=>import("./components/auth/CreateAccount.jsx"));
 const NotFound = lazy(()=>import("./components/NotFound.jsx"));
-
+const UploadVideo = lazy(()=>import("./components/upload-video/UploadVideo.jsx"));
 
 const stdStatus = {
     loadding: false,
@@ -68,6 +68,7 @@ export default function App() {
                                 </>
                             }
                                 <Route path="/" element={<Wall/>}/>
+                                <Route path="/upload-video" element={<UploadVideo logged={status.logged} />} />
                             <Route path="*" element={<NotFound/>}/>
                         </Routes>
                         </Inherit.Provider>
