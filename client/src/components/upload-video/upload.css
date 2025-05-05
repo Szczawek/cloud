@@ -1,0 +1,27 @@
+.uplaod-video {
+    display:grid;
+    place-content:center;
+}
+
+.upload-form {
+    display:grid;
+    place-content:center;
+    justify-items:center;
+    row-gap:1rem;
+}
+
+.title-bar {
+    text-align:center;
+    font-size:2.2rem;
+}
+
+.up-btn {
+    cursor:pointer;
+    width:max-content;
+    border-radius: .4rem;
+    background-color:purple;
+    padding:.4rem .8rem;
+    color:white;
+    border:none;
+    font-size:1.5rem;
+}

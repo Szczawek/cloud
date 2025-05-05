@@ -18,13 +18,9 @@ import (
 
 func helmet(next http.Handler) http.Handler{
     return http.HandlerFunc(func(res http.ResponseWriter, req *http.Request) {
-        path := req.URL.Path
-        defer req.Body.Close();
-        if path != "/upload-video" {
-            res.Header().Set("Cross-Origin-Opener-Policy", "same-origin")
-            res.Header().Set("Cross-Origin-Resource-Policy", "same-origin")
-            res.Header().Set("Cross-Origin-Embedder-Policy", "require-corp")
-        }
+        res.Header().Set("Cross-Origin-Opener-Policy", "same-origin")
+        res.Header().Set("Cross-Origin-Resource-Policy", "same-origin")
+        res.Header().Set("Cross-Origin-Embedder-Policy", "require-corp")
         res.Header().Set("X-Frame-Options", "DENY")
         res.Header().Set("X-Content-Type-Options", "nosniff")
         res.Header().Set("X-XSS-Protection", "1; mode=block")
@@ -62,20 +58,21 @@ func main() {
 	corsHandler := cors.New(cors.Options{
         AllowedOrigins: []string{"https://127.0.0.1:5173"}, 
 		AllowedMethods: []string{"GET","POST"},
-        AllowedHeaders: []string{"Content-Type", "Authorization",},
+        AllowedHeaders: []string{"Content-Type", "Authorization"},
 		ExposedHeaders: []string{"Content-Length", "X-Requested-With"},
 	    AllowCredentials: true,
         MaxAge: 300,
         Debug: true,
     });
-    
     r.Use(corsHandler.Handler);
     r.Use(helmet);
-    r.Use(access.AccessPoint); ;
+    r.Use(access.AccessPoint);
+
     r.Post("/create-account",account.CreateAccount)
     r.Post("/login",account.Login);
     r.Get("/auto-login",session.AutoLogin);
     r.Post("/upload-video", videoUp.UploadVideo);
+    
     database.Init(); 
 	fmt.Sprintf("Server is starting on https://127.0.0.1:%s", port);
 	log.Fatal(server.ListenAndServeTLS("ssl/server.cert", "ssl/server.key"));

@@ -1,4 +1,5 @@
-export async function uploadReq(file) {
+export async function uploadReq(file) { 
+    const arr = [];
     const size = file.size;
     const chuck = 1024 * 1024
     const lastChuck = Math.ceil(size / chuck);
@@ -15,9 +16,9 @@ export async function uploadReq(file) {
             method:"POST",
             credentails:"include",
             body:form,
-        }
-        const res = await fetch(`${process.env.VITE_API_URL}/upload-video`,options);
-        if(!res.ok) throw res.status;
+         }
+        arr.push(fetch(`${process.env.VITE_API_URL}/upload-video`,options));
     }
-    return "ok"
+    const res = await Promise.all(arr);
+    return res;
 }
