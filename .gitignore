@@ -33,7 +33,7 @@ yarn-error.log
 **/*.db
 **/*.db-journal
 **/*.log
-
+**/uploads/
 # Logs and temporary files
 **/*.log
 logs/
