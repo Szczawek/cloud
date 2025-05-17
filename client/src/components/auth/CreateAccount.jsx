@@ -1,7 +1,8 @@
 import {useContext, useEffect, useState, useRef} from "react";
 import {Link,Navigate} from "react-router";
-import "./createAccount.css";
 import {Inherit} from "../../App.jsx";
+import "./login.css";
+
 const defData = {
     nick:"",
     tag:"",
@@ -31,11 +32,13 @@ export default function CreateAccount() {
         firstElement.current.focus();
     },[])
 
-    console.log(parentContext)
-
    function rewriteData(e) {
         const {name,value} = e.target;
-        if(name == "password" || name == "confirm") comparePass();
+        const lenBool = data.password.length >= 8 && data.confirm.length >= 8
+
+        if(lenBool) {
+            if(name == "password" || name == "confirm") comparePass(value);
+        } 
         setData(prev =>({...prev,[name]:value}));
     }
     
@@ -55,13 +58,10 @@ export default function CreateAccount() {
     
     }
 
-    function comparePass() {
+    function comparePass(value) {
         const {password,confirm} = data;
-        if(password.length < 8 || confirm.length < 8 ) {
-            if(logs.password) rewriteLogs("password", false);
-            return; 
-        };
-        if(password == confirm && logs.password) return rewriteLogs("password", false);
+        const bool = password == value || confirm == value;
+        if(bool && logs.password) return rewriteLogs("password", false);
         if(!logs.password) rewriteLogs("password", true);
     }
 
@@ -101,24 +101,30 @@ export default function CreateAccount() {
 
     if(logs.created) return <Navigate to="/"/>
 
-    return <div className="create-acc-box">
-            <form className="form-box" onSubmit={submit}>
+    return <div className="create-acc-container">
+            <form className="create-box" onSubmit={submit}>
                 <header className="title-box">
-            <h2>Create Account</h2></header>
-                <label ref={firstElement} htmlFor="nick">Nick</label>
-                <input maxLength="32" minLength="2" value={data.nick} onChange={rewriteData} placeholder="Nick" required id="nick" name="nick"/>
-                <label htmlFor="unique">Tag Name</label>
-                <input minLength="3" maxLength="40" value={data.tag} onChange={rewriteData} placeholder="Unique Name" required id="unique" name="tag"/>
-                <label htmlFor="login">Email</label>
-                <input minLength="5" maxLength="50" value={data.email} onChange={rewriteData} placeholder="Email" required id="login" type="email" name="login" />
-                {logs.password && <p>Password are not the same</p>}
-                <label htmlFor="password">Password</label>
-                <input ref={password} minLength="8" maxLength="32" value={data.password} onChange={rewriteData} placeholder="Password" required id="password" type="password" name="password" />
-                <button onClick={showPassword} type="button">Show Password</button>
-                <label htmlFor="confirm">Confirm Password</label>
-                <input ref={confirm} minLength="8" maxLength="32" value={data.confirm} onChange={rewriteData} placeholder="Confirm Password" required id="confirm" type="password" name="confirm" />
-                <button className="sb-btn" disabled={data.loading} type="submit">{data.loading? "Loading": "Submit"}</button>
+                     <h2>Create Account</h2>
+                </header>
+                <div className="fields">    
+                    <label className="subtitle-box" ref={firstElement} htmlFor="nick">Nick</label>
+                    <input maxLength="32" minLength="2" value={data.nick} onChange={rewriteData} placeholder="Nick" required id="nick" name="nick"/>
+                    <label  className="subtitle-box" htmlFor="unique">Tag Name</label>
+                    <input minLength="3" maxLength="40" value={data.tag} onChange={rewriteData} placeholder="Unique Name" required id="unique" name="tag"/>
+                    <label className="subtitle-box" htmlFor="login">Email</label>
+                    <input minLength="5" maxLength="50" value={data.email} onChange={rewriteData} placeholder="Email" required id="login" type="email" name="login" />
+                    {logs.password && <p>Password are not the same</p>}
+                    <label className="subtitle-box" htmlFor="password">Password</label>
+                    <input ref={password} minLength="8" maxLength="32" value={data.password} onChange={rewriteData} placeholder="Password" required id="password" type="password" name="password" />
+                    <button className="show-pass-btn" onClick={showPassword} type="button">X</button>
+                    <label className="subtitle-box" htmlFor="confirm">Confirm Password</label>
+                    <input ref={confirm} minLength="8" maxLength="32" value={data.confirm} onChange={rewriteData} placeholder="Confirm Password" required id="confirm" type="password" name="confirm" />
+                </div>
+                <button className="submit-btn" disabled={data.loading} type="submit">{data.loading? "Loading": "Submit"}</button>
             </form>
-            <Link to="/login">Login</Link>
+            <div className="panel">
+                <p className="desc">If you have already account</p>
+                <Link className="link" to="/login">Login</Link>
+            </div>
         </div>
 }

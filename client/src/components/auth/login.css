@@ -1,12 +1,63 @@
-.login-box {
+.login-container, .create-acc-container {
+    display:grid;
+    grid-template-rows:repeat(2,max-content);
+    row-gap:2rem;
+}
+
+.login-box, .create-box {
     display:grid;
     justify-content:center;
     row-gap:1rem;
 }
-.login-box .title-box {
+ 
+.title-box {
     text-align:center;
 }
 
-.login-box input {
-    padding: .2rem .4rem;
+.fields {
+    display:grid;
+    position:relative;
+}
+.subtitle-box {
+    font-size:1.2rem;
+    padding-top:1rem;
+}
+
+.login-box input, .create-box input {
+    margin-top:.8rem;
+    font-size: 1.2rem;
+    padding: .4rem .4rem;
+}
+
+.show-pass-btn {
+    right:-2rem;
+    bottom:.5rem;
+    position:absolute;
+}
+
+.panel {
+    display:grid;
+    gap:1rem;
+    align-items:center;
+    justify-content:center;
+    justify-items:center;
+    grid-template-columns:repeat(2,max-content);
+}
+
+.submit-btn {
+    font-size:1.2rem;
+    padding:.2rem .4rem;
+    border-radius:.2rem;
+    background-color:orange;
+}
+
+.link {
+    color:red;
+}
+
+@media (width < 560px) {
+    .panel {
+        grid-template-columns:1fr;
+        //grid-template-rows:repeat(2, max-content);
+    }
 }

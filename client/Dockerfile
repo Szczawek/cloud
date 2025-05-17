@@ -34,9 +34,7 @@ FROM nginx:1.27.4-alpine-slim
 
 RUN rm /etc/nginx/conf.d/default.conf
 
-COPY /nginx/. /etc/nginx/conf.d
-
-RUN rm -r /usr/share/nginx/html
+COPY /nginx/. /etc/nginx/conf.d/
 
 COPY --from=prod /usr/src/client/dist /usr/share/nginx 
 

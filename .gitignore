@@ -40,7 +40,6 @@ logs/
 pids/
 **/*.pid
 **/*.seed
-**/ssl
 **/videos
 **/images
 nginx

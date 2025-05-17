@@ -1,36 +1,28 @@
 name: stars-and-clounds
 
 services: 
+#proxy is combined with client build
   client: 
     build: client
     ports: 
       - 8443:8443
-      - 8080:8080 
+      - 80:80
+      - 443:443
     networks:
+      - backend
       - frontend
 
-  apiv1:
-    build: api
+  apiv2: 
+    build: apiv2
+    env_file:
+        - apiv2/.env.development
     expose: 
-    -  4000
-    deploy:
+    - 3000
+    deploy: 
       replicas: 3
     networks:
-      - backend
-      - deepback
-    depends_on:
-      - mysqldb
-  
-  proxy:
-    build: proxy
-    ports:
-     - 443:443
-     - 80:80
-    networks:
-      - backend
-      - frontend
-    depends_on:
-      - apiv1
+    - backend
+    - deepback
 
   mysqldb: 
     build: mysql_db

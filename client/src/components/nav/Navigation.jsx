@@ -2,7 +2,8 @@ import {Outlet,NavLink} from "react-router";
 import "./navigation.css";
 import SearchEngine from "./SearchEngine.jsx";
 
-export default function Navigation() {
+export default function Navigation({data,logged}) {
+    const {tag,avatar} = data;
     return <>
             <header>
                 <nav className="navigation">
@@ -21,7 +22,7 @@ export default function Navigation() {
                             <NavLink className="link" to="/notification">Notification</NavLink>
                                </li>                        
                         <li className="tab-item">
-                            <NavLink className="link" to="/profile">Profile</NavLink>
+                            <NavLink className="link" to={`${logged? tag: "login"}`}>Profile</NavLink>
                         </li>
                     </ul>
                  </nav>

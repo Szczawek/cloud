@@ -32,6 +32,7 @@ func CreateAccount(res http.ResponseWriter, req *http.Request) {
                 http.Error(res, "Database error", http.StatusInternalServerError);
                 return; 
             }
+            //Confirm email;
             res.WriteHeader(http.StatusCreated);
             return;
         }

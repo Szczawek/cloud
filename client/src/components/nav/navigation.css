@@ -1,6 +1,8 @@
 .navigation {
+    position:relative;
     padding:1rem 2rem;
     display: grid;
+    gap:1rem;
     align-items:center;
     grid-template-columns: repeat(3, 1fr);
 }
@@ -9,7 +11,8 @@
     display:grid;
     justify-content:center;
     align-items:center;
-    grid-auto-columns: minmax(3rem,8rem);
+    grid-auto-columns: repeat(3, max-content);
+    gap:1rem;
     grid-auto-flow:column;
 }
 
@@ -17,12 +20,33 @@
     display:none;
 }
 @media (width < 650px) {
-    .tab-list {
+    .tab-list { 
+        position:absolute;
+        display:none;
+        width:100%;
+        height: 150px;
+        top:0;
+        border-bottom:2px solid red;
+        backdrop-filter:blur(20px);
         grid-auto-flow:row;
     }
+    
+    .mobile-menu {
+        display:block;
+    }
+
+    .mobile-menu:hover {
+        visibility:hidden;
+        background-color:red;
+    }
+    .mobile-menu:hover + .tab-list, .tab-list:hover {
+        display:grid;
+    }
+
     .navigation {
         padding: .5rem .75rem;
     }
+    
 }
 
 .browser input {

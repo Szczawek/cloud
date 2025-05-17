@@ -13,10 +13,10 @@ var DB *sql.DB;
 func Init() {
     config := mysql.Config{
         User: "root",
-        Passwd: os.Getenv("PASSWORD"),
+        Passwd: os.Getenv("DB_PASSWORD"),
         Net: "tcp",
         Addr: "127.0.0.1:3306",
-        DBName: os.Getenv("DATABASE"),
+        DBName: os.Getenv("DB_NAME"),
 
     };
     

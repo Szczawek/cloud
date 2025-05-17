@@ -68,14 +68,18 @@ export default function Login() {
                 <header className="title-box">
                     <h2 className="title">Login</h2>
                 </header>
-                <label htmlFor="login-inp">Login</label>
-                <input id="login-inp" placeholder="Login" value={data.login} onChange={updateData} minLength="3" maxLength="60" name="login" type="email" required/>
-                <label htmlFor="pass-inp">Password</label>
-                <input ref={password} placeholder="Password" value={data.password} onChange={updateData} type="password" minLength="8" maxLength="32" name="password" id="pass-inp" required/>
-        
-                <button onClick={showPassword} className="show-pass-btn" type="button">Show Password</button>
+                <div className="fields">
+                    <label className="subtitle-box" htmlFor="login-inp">Login</label>
+                    <input id="login-inp" placeholder="Login" value={data.login} onChange={updateData} minLength="3" maxLength="60" name="login" type="email" required/>
+                    <label className="subtitle-box" htmlFor="pass-inp">Password</label>
+                    <input ref={password} placeholder="Password" value={data.password} onChange={updateData} type="password" minLength="8" maxLength="32" name="password" id="pass-inp" required/>
+                    <button onClick={showPassword} className="show-pass-btn" type="button">X</button>
+                </div>
                 <button className="submit-btn" disabled={logs.loading} type="submit">{logs.loading? "Loading": "Login"}</button>
             </form>
-            <Link to="/create-account">Register</Link>
+            <div className="panel">
+                <p className="desc">If you don't have account yet</p>
+                <Link className="link" to="/create-account">Register</Link>
+            </div>
         </div>
 }

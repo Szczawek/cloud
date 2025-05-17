@@ -39,9 +39,10 @@ func helmet(next http.Handler) http.Handler{
 //"grace-full" shutdown;
 
 func main() {
-    err := godotenv.Load(".env");
-    if err != nil {
-        log.Fatal(err);
+    if err := godotenv.Load(".env"); err != nil {
+         if err := godotenv.Load(".env.development"); err != nil {
+                log.Fatalf("Env files aren't anvaliable", err);
+            };
     };
 
 	r := chi.NewRouter()
@@ -74,8 +75,8 @@ func main() {
     r.Post("/upload-video", videoUp.UploadVideo);
     
     database.Init(); 
-	fmt.Sprintf("Server is starting on https://127.0.0.1:%s", port);
 	log.Fatal(server.ListenAndServeTLS("ssl/server.cert", "ssl/server.key"));
+    fmt.Sprintf("Server is starting on https://127.0.0.1:%s", port);
 };
 
 

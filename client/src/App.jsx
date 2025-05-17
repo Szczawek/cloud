@@ -11,6 +11,7 @@ const AuthTwo = lazy(()=>import("./components/auth/AuthTwo.jsx"));
 const CreateAccount = lazy(()=>import("./components/auth/CreateAccount.jsx"));
 const NotFound = lazy(()=>import("./components/NotFound.jsx"));
 const UploadVideo = lazy(()=>import("./components/upload-video/UploadVideo.jsx"));
+const Profile = lazy(()=>import("./components/profile/Profile.jsx"));
 
 const stdStatus = {
     loadding: false,
@@ -18,11 +19,16 @@ const stdStatus = {
     logged: false,
 }
 
+const stdUser = {
+    tag:"",
+    avatar:"",
+}
+
 export const Inherit = createContext(null);
 
 export default function App() {
     const [status,setStatus] = useState(stdStatus);
-    const [user, setUser] = useState({});
+    const [user, setUser] = useState(stdUser)
     const conServer = useRef(null);
     const refresh = useRef(null);
     function updateStatus(name,boolen) {
@@ -56,7 +62,7 @@ export default function App() {
     return <div className="app">
                 <Suspense fallback={<LoadingScreen/>}>
                     <BrowserRouter>
-                        <Navigation/>
+                        <Navigation data={user.tag,user.avatar} logged={status.logged}/>
                         <Inherit.Provider value={{refreshUser,user}} >
                         <Routes>
                             <Route path="/home" element={<Home/>} />
@@ -67,9 +73,9 @@ export default function App() {
                                 <Route path="/auth-two" element={<AuthTwo/>}/>
                                 </>
                             }
-                                <Route path="/" element={<Wall/>}/>
-                                <Route path="/upload-video" element={<UploadVideo logged={status.logged} />} />
-                            <Route path="*" element={<NotFound/>}/>
+                            <Route path="/" element={<Wall/>}/>
+                            <Route path="*" element={<Profile data={user} logged={status.logged} />}/>
+                            <Route path="/upload-video" element={<UploadVideo logged={status.logged}/>} />
                         </Routes>
                         </Inherit.Provider>
                     </BrowserRouter>

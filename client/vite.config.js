@@ -3,6 +3,8 @@ import react from '@vitejs/plugin-react'
 import fs from "fs"
 
 export default defineConfig(({mode}) => {
+// There is no need for special config, npm run dev will automaticly 
+// looking for .env.dev 
 const env = loadEnv(mode,process.cwd(),'VITE_');
 
 	return {

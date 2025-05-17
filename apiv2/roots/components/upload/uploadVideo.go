@@ -2,8 +2,13 @@ package videoUp
 
 import (
     "fmt"
+    "io"
+    "os"
+    "strconv"
     "net/http"
 );
+
+var count int = 0;
 
 func UploadVideo(res http.ResponseWriter, req *http.Request) {
     defer req.Body.Close();
@@ -17,7 +22,21 @@ func UploadVideo(res http.ResponseWriter, req *http.Request) {
         return;
     }
 
-    fmt.Println(file);
+    defer file.Close();
+    byte, errIo := io.ReadAll(file);
+    if errIo != nil {
+        fmt.Println("err");
+        return;
+    }
+
+    count ++;
+    desc := "uploads/"
+    desc += strconv.Itoa(count);
+    desc += ".jpg";
+    errFi := os.WriteFile(desc, byte, 0666);
+    if errFi != nil {
+        fmt.Println("err");
+    }
+    fmt.Println(byte);
     res.WriteHeader(http.StatusAccepted);
-    res.Write([]byte("ok"));
 }
