@@ -1,0 +1,27 @@
+.auth-code {
+    display:flex;
+    flex-wrap:wrap;
+    place-content:center;
+    gap:1rem;
+}
+
+.auth-code .box {
+    width:80px;
+    border-radius: .1rem;
+    border: 2px solid pink;
+    aspect-ratio:1/1;
+}
+
+.auth-code .box input{
+    aspect-ratio:1/1;
+    width:100%;
+    text-align:center;
+    font-size:2rem;
+    color:white;
+    background-color:#00aaff;
+    padding:.2rem .4rem;
+}
+
+.sb-btn {
+    baclground-color:green;
+}

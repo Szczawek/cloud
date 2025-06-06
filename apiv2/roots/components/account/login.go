@@ -34,9 +34,13 @@ func Login(res http.ResponseWriter, req *http.Request) {
         return;
 
     }
-    session.SetSession(res,id);
     res.WriteHeader(http.StatusAccepted);
-    res.Write([]byte("logged"));
+    errJWT := session.SetSession(res,id);
+    if errJWT != nil {
+        res.Write([]byte("logged, session isn't alive. The error with cookies"));
+        return;
+    }
+     res.Write([]byte("logged"));
 }
 
 

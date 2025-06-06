@@ -61,7 +61,7 @@ export default function Login() {
          }
         
     }
-    if(logs.logged) return <Navigate to="/auth-two"/>
+    if(logs.logged) return <Navigate to="/auth-code"/>
 
     return <div className="login-container">
             <form className="login-box" onSubmit={login}>

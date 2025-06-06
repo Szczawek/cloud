@@ -3,12 +3,11 @@ export async function uploadReq(file) {
     const size = file.size;
     const chuck = 1024 * 1024
     const lastChuck = Math.ceil(size / chuck);
-    
+   console.log(file.arrayBuffer()) 
     for(let i = 0; i < lastChuck; i++) {
         const start = chuck * i;
         const end = Math.min(start + chuck,size)
         const scrap = file.slice(start,end);
-        
         const form = new FormData();
         form.append("file",scrap);
         

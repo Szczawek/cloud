@@ -73,7 +73,8 @@ func main() {
     r.Post("/login",account.Login);
     r.Get("/auto-login",session.AutoLogin);
     r.Post("/upload-video", videoUp.UploadVideo);
-    
+    r.Post("/auth-code",account.SendAuthCode);   
+    r.Post("/confirm-code", account.ConfirmAuthCode);
     database.Init(); 
 	log.Fatal(server.ListenAndServeTLS("ssl/server.cert", "ssl/server.key"));
     fmt.Sprintf("Server is starting on https://127.0.0.1:%s", port);

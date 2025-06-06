@@ -3,16 +3,16 @@ import {BrowserRouter,Routes,Route, Outlet} from "react-router";
 import {catchUserData} from "./components/auth/catchUserData.js";
 import  "./styles.css"
 import Navigation from "./components/nav/Navigation.jsx"
-import LoadingScreen from "./components/LoadingScreen.jsx";
-const Home = lazy(()=>import("./components/Home.jsx"));
-const Wall = lazy(()=>import("./components/main/Wall.jsx"));
+import LoadingScreen from "./components/main/LoadingScreen.jsx";
+const Home = lazy(()=>import("./components/main/Home.jsx"));
+const Info = lazy(()=>import("./components/main/Info.jsx"));
+const Wall = lazy(()=>import("./components/video/Wall.jsx"));
 const Login = lazy(()=>import("./components/auth/Login.jsx"));
-const AuthTwo = lazy(()=>import("./components/auth/AuthTwo.jsx"));
 const CreateAccount = lazy(()=>import("./components/auth/CreateAccount.jsx"));
-const NotFound = lazy(()=>import("./components/NotFound.jsx"));
+const NotFound = lazy(()=>import("./components/main/NotFound.jsx"));
 const UploadVideo = lazy(()=>import("./components/upload-video/UploadVideo.jsx"));
 const Profile = lazy(()=>import("./components/profile/Profile.jsx"));
-
+const AuthCode = lazy(()=>import("./components/auth/AuthCode.jsx"))
 const stdStatus = {
     loadding: false,
     error: false,
@@ -70,9 +70,10 @@ export default function App() {
                                 <>
                                 <Route path="/login" element={<Login/>}/>
                                 <Route path="/create-account" element={<CreateAccount/>}/>
-                                <Route path="/auth-two" element={<AuthTwo/>}/>
+                                <Route path="/auth-code" element={<AuthCode/>}/>
                                 </>
                             }
+                            <Route path="/info" elementy={<Info/>}/>
                             <Route path="/" element={<Wall/>}/>
                             <Route path="*" element={<Profile data={user} logged={status.logged} />}/>
                             <Route path="/upload-video" element={<UploadVideo logged={status.logged}/>} />
