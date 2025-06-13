@@ -1,6 +1,5 @@
 import {useContext, useEffect, useState, useRef} from "react";
 import {Link,Navigate} from "react-router";
-import {Inherit} from "../../App.jsx";
 import "./login.css";
 
 const defData = {
@@ -22,10 +21,10 @@ const defLogs = {
 export default function CreateAccount() {
     const [data,setData] = useState(defData);
     const [logs,setLogs] = useState(defLogs);
+    const [showPass, setShowPass] = useState(false);
     const password = useRef(null);
     const confirm = useRef(null);
     const firstElement = useRef(null);
-    const parentContext = useContext(Inherit);
 
     useEffect(()=> {
         if(!firstElement.current) return;
@@ -38,7 +37,7 @@ export default function CreateAccount() {
 
         if(lenBool) {
             if(name == "password" || name == "confirm") comparePass(value);
-        } 
+        }
         setData(prev =>({...prev,[name]:value}));
     }
     
@@ -47,7 +46,8 @@ export default function CreateAccount() {
     }
 
     function showPassword() {
-        const {type} = password.current;;
+        const {type} = password.current;
+        setShowPass(prev => !prev);
         function swap(type){
             password.current.type = type;
             confirm.current.type = type;
@@ -85,12 +85,15 @@ export default function CreateAccount() {
             const res = await fetch(`${process.env.VITE_API_URL}/create-account`,options);
             if(!res.ok) {
                 if (res.status == 401) {
+                    //split for email/tag error;
+                    //split for email/tag error;
+                    //split for email/tag error;
+                    //split for email/tag error;
                     rewriteLogs("email", true);
                     return;
                 }
                 throw res.status;
             }
-            parentContext.refreshUser();
             rewriteLogs("created",true);
         } catch(err) {
             rewriteLogs("error",true);
@@ -99,9 +102,12 @@ export default function CreateAccount() {
         }
     }
 
-    if(logs.created) return <Navigate to="/"/>
+    if(logs.created) return <Navigate to="/auth-code"/>
 
     return <div className="create-acc-container">
+            {logs.email && <div className="info-window"><p>Account with that {logs.email? "email": "tag"} already exists</p>
+                    <button className="close-btn" onClick={() => rewriteLogs("email",false)}>Close</button>
+                </div>}
             <form className="create-box" onSubmit={submit}>
                 <header className="title-box">
                      <h2>Create Account</h2>
@@ -116,7 +122,7 @@ export default function CreateAccount() {
                     {logs.password && <p>Password are not the same</p>}
                     <label className="subtitle-box" htmlFor="password">Password</label>
                     <input ref={password} minLength="8" maxLength="32" value={data.password} onChange={rewriteData} placeholder="Password" required id="password" type="password" name="password" />
-                    <button className="show-pass-btn" onClick={showPassword} type="button">X</button>
+                    <button tabIndex="-1" className="show-pass-btn" onClick={showPassword} type="button">{showPass? <img src="/images/eye.svg"/>:<img src="/images/eye-slash.svg"/>}</button>
                     <label className="subtitle-box" htmlFor="confirm">Confirm Password</label>
                     <input ref={confirm} minLength="8" maxLength="32" value={data.confirm} onChange={rewriteData} placeholder="Confirm Password" required id="confirm" type="password" name="confirm" />
                 </div>

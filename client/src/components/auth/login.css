@@ -2,6 +2,7 @@
     display:grid;
     grid-template-rows:repeat(2,max-content);
     row-gap:2rem;
+    position:relative;
 }
 
 .login-box, .create-box {
@@ -20,24 +21,38 @@
 }
 .subtitle-box {
     font-size:1.2rem;
-    padding-top:1rem;
+    padding-top:1.4rem;
 }
 
 .login-box input, .create-box input {
-    margin-top:.8rem;
+    margin-top:.4rem;
     font-size: 1.2rem;
-    padding: .4rem .4rem;
+    color:white;
+    border-radius:.2rem;
+    border:2px solid #dab3ff;
+    background-color:#8400ff;
+    padding: .4rem .8rem;
+}
+
+.login-box input::placeholder, .create-box input::placeholder {
+    color:yellow;
 }
 
 .show-pass-btn {
-    right:-2rem;
+    right:-4rem;
+    background:transparent;
     bottom:.5rem;
+    cursor:pointer;
     position:absolute;
+}
+.show-pass-btn img{
+    width:3rem;
+    aspect-ratio:1/1;
 }
 
 .panel {
     display:grid;
-    gap:1rem;
+    gap:.4rem;
     align-items:center;
     justify-content:center;
     justify-items:center;
@@ -45,19 +60,52 @@
 }
 
 .submit-btn {
-    font-size:1.2rem;
-    padding:.2rem .4rem;
+    border: 2px solid #7300e6;
+    font-size:1.3rem;
+    color:white;
+    font-weight:bolder;
+    padding:.4rem .8rem;
     border-radius:.2rem;
-    background-color:orange;
+    cursor:pointer;
+    background-color:#d9b3ff;
+    transition: scale, background-color,border-color, 300ms;
 }
+
+.submit-btn:is(:hover,:focus,:focuse-with,:focuse-visible) {
+    background-color:#7300e6;
+    scale:1.1;
+    border-color:#d9b3ff;
+}
+
 
 .panel .link {
     color:red;
 }
 
+.info-window {
+    position:absolute;
+    z-index:9999;
+    height:100%;
+    width:100%;
+    display:grid;
+    gap:1rem;
+    place-content:center;
+    justify-items:center;
+    backdrop-filter:blur(20px);
+}
+
+.close-btn {
+    cursor:pointer;
+    padding:.4rem .8rem;
+    font-size:1.2rem;
+    border:2px solid black;
+    font-weight:bolder;
+    background:red;
+    color:white;
+    width:max-content;
+}
 @media (width < 560px) {
     .panel {
         grid-template-columns:1fr;
-        //grid-template-rows:repeat(2, max-content);
     }
 }

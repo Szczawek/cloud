@@ -18,9 +18,9 @@ func CreateToken(id string) (string, error) {
         },
     };
     token := jwt.NewWithClaims(jwt.SigningMethodHS256,dataForJWT)
-    tokenLock, err := token.SignedString(os.Getenv("JWT_COOKIES"));
+    tokenLock, err := token.SignedString([]byte(os.Getenv("JWT_COOKIES")));
     if err != nil {
         return "",err;
-    } 
+    }
     return tokenLock, nil;
 }

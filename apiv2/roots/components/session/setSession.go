@@ -21,6 +21,5 @@ func SetSession(res http.ResponseWriter, id string) error {
         SameSite: http.SameSiteNoneMode,
     };
     http.SetCookie(res, cookie);
-    //temporary
     return nil;
 }

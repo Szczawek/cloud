@@ -1,27 +1,47 @@
 .auth-code {
+    display:grid;
+    place-content:center;
+    justify-items:center;
+    gap:1rem;
+    grid-template-rows: repeat(2,max-content);
+}
+.code-box {
     display:flex;
     flex-wrap:wrap;
     place-content:center;
     gap:1rem;
 }
 
-.auth-code .box {
+.code-box .box {
     width:80px;
     border-radius: .1rem;
-    border: 2px solid pink;
+    border: 2px solid #dab3ff;
     aspect-ratio:1/1;
 }
 
-.auth-code .box input{
+.code-box .box input{
     aspect-ratio:1/1;
     width:100%;
     text-align:center;
     font-size:2rem;
     color:white;
-    background-color:#00aaff;
+    background-color:#a94dff;
     padding:.2rem .4rem;
 }
 
 .sb-btn {
-    baclground-color:green;
+    width:max-content;
+    color:white;
+    border:2px solid  #dab3ff;
+    background-color: #8400ff;
+    font-size:1.2rem;
+    font-weight:bolder;
+    padding:.4rem .8rem;
+    cursor:pointer;
+    transition:scale,filter,300ms;
+}
+
+.sb-btn:is(:hover,:focuse,:focuse-visible,:focuse-with) {
+    scale:1.1;
+    filter:brightness(150%);
 }

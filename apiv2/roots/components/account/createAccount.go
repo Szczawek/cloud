@@ -20,23 +20,25 @@ func CreateAccount(res http.ResponseWriter, req *http.Request) {
 
     err := json.NewDecoder(req.Body).Decode(&data);
     if err != nil {
-        http.Error(res, "json erro", http.StatusInternalServerError);
+        http.Error(res, "json error", http.StatusInternalServerError);
         return;
     };
 
     dbErr := attempt(data.Tag, data.Login);
     if dbErr != nil {
-        if dbErr == sql.ErrNoRows {
-            err := setData(data);
-            if err != nil {
-                http.Error(res, "Database error", http.StatusInternalServerError);
+        if dbErr == sql.ErrNoRows { 
+            if err := setData(data); err != nil {
+                http.Error(res, "Error with inserts data to database", http.StatusInternalServerError);
                 return; 
             }
-            //Confirm email;
-            res.WriteHeader(http.StatusCreated);
+            if err := SendAuthCode(data.Login); err != nil {
+                http.Error(res,"Error with email server, auth code can't be sends", http.StatusInternalServerError);
+                return;
+            }
+            res.Write([]byte("Auth Code Was seneded"));
             return;
         }
-        http.Error(res,"db err", http.StatusInternalServerError);
+        http.Error(res,"Error with open database", http.StatusInternalServerError);
         return;
     }
     http.Error(res,"User with that data already exists", http.StatusUnauthorized);

@@ -8,8 +8,11 @@ import(
 
 func ConfirmJWT(value string) (error) {
     token, err := jwt.ParseWithClaims(value, &CustomData{},func(token *jwt.Token) (interface{}, error) {
-        return os.Getenv("JWT_cookies"), nil
+        return []byte(os.Getenv("JWT_cookies")), nil
     })
-    fmt.Println(token);
-    return err;
+    if err != nil {
+        return err;
+    }
+    data, ok := token.Claims.(*CustomData);
+    return data.ID, nil;
 }

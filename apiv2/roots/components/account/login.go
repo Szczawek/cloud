@@ -17,30 +17,30 @@ func Login(res http.ResponseWriter, req *http.Request) {
     defer req.Body.Close();
     var loginData LoginSchema;
 
-    err := json.NewDecoder(req.Body).Decode(&loginData);
-    if err != nil {
+    if err := json.NewDecoder(req.Body).Decode(&loginData); err != nil {
         http.Error(res,"json err", http.StatusInternalServerError);
         return;
     };
 
-    dbErr, id := loginAttempt(loginData);
-    if dbErr != nil {
-        if dbErr == sql.ErrNoRows {
+    err, id := loginAttempt(loginData);
+    if err != nil {
+        if err == sql.ErrNoRows {
         http.Error(res, "Incorrect data!", http.StatusUnauthorized);
         return;
         }
-
         http.Error(res, "database error", http.StatusInternalServerError);
         return;
-
     }
-    res.WriteHeader(http.StatusAccepted);
-    errJWT := session.SetSession(res,id);
-    if errJWT != nil {
-        res.Write([]byte("logged, session isn't alive. The error with cookies"));
+
+    if err := session.SetSession(res,id); err != nil {
+        http.Error(res, "Error with cookies", http.StatusInternalServerError);
         return;
     }
-     res.Write([]byte("logged"));
+    if err := SendAuthCode(loginData.Login); err != nil {
+        http.Error(res,"Error with email server", http.StatusInternalServerError);
+        return;
+    }
+    res.Write([]byte("Auth code was sended"));
 }
 
 

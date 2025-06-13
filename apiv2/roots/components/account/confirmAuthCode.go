@@ -3,13 +3,19 @@ package account
 import(
     "net/http"
     "fmt"
-    //"apiv2/roots/components/token"
+    "apiv2/roots/components/token"
 )
 
 func ConfirmAuthCode(res http.ResponseWriter, req *http.Request) {
-    cookies := req.Cookies();
-    fmt.Println(cookies);
-   // id := token.ConfirmJWT(cookies[0]);
+    cookie, err := req.Cookie("session");
+    if err != nil {
+        http.Error(res,"No cookies anvaliable", http.StatusInternalServerError);
+        return;
+    };
+    id,errToken := token.ConfirmJWT(cookie.Value);
+    if errToken != nil {
+        http.Error(res,"JWT token error",http.StatusInternalServerError);
+        return;
+    }
 
-   // fmt.Println(id);
 }

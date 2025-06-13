@@ -1,7 +1,6 @@
-import {useContext, useState, useRef} from "react";
+import {useContext, useEffect, useState, useRef} from "react";
 import {Navigate,Link} from "react-router";
 import "./login.css";
-import Inherit from "../../App.jsx"
 
 const defaultData = {
     login:"",
@@ -11,13 +10,22 @@ const defaultData = {
 const defaultLogs = {
     loading:false,
     logged:false,
+    incorrectPass:false,
 }
 
 export default function Login() {
     const [data, setData] = useState(defaultData);
     const [logs, setLogs] = useState(defaultLogs);
     const password = useRef(null);
-    const parentContext = useContext(Inherit);
+
+    useEffect(()=> {
+        if(logs.incorrectPass) { 
+            const timmer = setTimeout(()=> {
+            updateLogs("incorrectPass",false);
+        },1000)
+        return ()=> clearTimeout(timmer);
+    }
+    },[logs])
 
     function updateLogs(status,value) {
         setLogs(prev => ({...prev,[status]:value}));
@@ -52,9 +60,10 @@ export default function Login() {
             
             const res = await fetch(`${process.env.VITE_API_URL}/login`,options);
             if(!res.ok) throw res.status;
-            parentContext.refreshUser();
             updateLogs("logged", true);
         } catch(err) {
+            console.log(err);
+            updateLogs("incorrectPass",true)
             console.log(err);
          } finally {
             updateLogs("loading",false);
@@ -64,7 +73,9 @@ export default function Login() {
     if(logs.logged) return <Navigate to="/auth-code"/>
 
     return <div className="login-container">
-            <form className="login-box" onSubmit={login}>
+        {logs.incorrectPass && <div className="info-window">
+            <p>Incorrect data</p></div>}   
+        <form className="login-box" onSubmit={login}>
                 <header className="title-box">
                     <h2 className="title">Login</h2>
                 </header>
